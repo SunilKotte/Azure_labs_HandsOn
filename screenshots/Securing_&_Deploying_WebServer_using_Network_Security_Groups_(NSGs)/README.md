@@ -91,6 +91,13 @@ Refreshed `http://<PUBLIC_IP_ADDRESS>` in the browser and verified that the **Ap
 
 ## 📸 Screenshots
 
-* ![NSG Inbound Rules](./screenshots/VM-NGS-SSH/NSG_Inbound_Rules_table.jpg)
-* ![SSH Terminal Connection](./screenshots/VM-NGS-SSH/SSH_conncetion.png)
-* ![Apache Live Page](./screenshots/VM-NGS-SSH/HTTP_Req_Success.jpg)
+* **NSG Inbound Rules**
+  ![NSG Inbound Rules](./NSG_Inbound_Rules_table.jpg)
+
+
+* **SSH Terminal Connection**
+  ![SSH Terminal Connection](./SSH_conncetion.png)
+
+
+* **Apache Live Page**
+  ![Apache Live Page](./HTTP_Req_Success.jpg)

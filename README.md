@@ -1,102 +1,32 @@
-# Securing & Deploying a Web Server on Microsoft Azure using Network Security Groups (NSGs)
+# ☁️ Microsoft Azure Hands-On Cloud & Networking Labs
 
-## 📌 Project Overview
-In this hands-on cloud infrastructure project, I provisioned a Linux Virtual Machine in Microsoft Azure, configured stateful firewall rules using **Network Security Groups (NSGs)**, established a secure administrative connection via **SSH**, and deployed an **Apache HTTP web server** accessible over the public internet.
-
-This lab demonstrates foundational cloud networking, SSH key-pair management, traffic troubleshooting, and implementing the **Principle of Least Privilege (PoLP)** at the network interface level.
+A collection of hands-on infrastructure labs demonstrating cloud networking, Linux server administration, stateful firewall security, and high-availability traffic routing in Microsoft Azure.
 
 ---
 
-## 🏗️ Architecture & Traffic Flow
+## 📂 Lab Projects Overview
 
-```text
-[ Local Machine (SSH Client) ] ──── Port 22 (TCP) ────┐
-                                                      ▼
-                                            [ Azure NSG Firewall ] ──▶ [ Ubuntu VM (Apache2) ]
-                                                      ▲
-[ Public Internet (Browser)  ] ──── Port 80 (TCP) ────┘
-```
-
-1. **Virtual Network & Compute:** Provisioned an Ubuntu Linux VM inside an Azure Virtual Network (VNet) with a Public IP address.
-2. **Default Security Posture:** Verified that Azure’s default NSG rules block unsolicited inbound internet traffic (`DenyAllInBound`) to protect the instance.
-3. **Secure Remote Access (SSH):** Configured an inbound security rule for **Port 22 (TCP)** and connected remotely from a local terminal using SSH key-pair authentication.
-4. **Web Server Deployment:** Installed and started the Apache2 web server via the Linux CLI.
-5. **Public Traffic Enablement (HTTP):** Configured an additional inbound NSG rule for **Port 80 (TCP)** to expose the web application to external HTTP requests while keeping all other ports locked down.
+### 1. [High-Availability Web Architecture with Azure Load Balancer](./screenshots/LoadBalncer_Lab(LB_VMs_Vnets_NSGs_HealthProbes_LBRules)/README.md)
+* **Core Services:** Azure Standard Load Balancer, Virtual Networks (VNets), Linux Virtual Machines, Network Security Groups (NSGs), Health Probes, Load Balancing Rules.
+* **What I Built:** Deployed a multi-VM web tier behind an Azure Standard Load Balancer to distribute incoming HTTP traffic across healthy backend instances.
+* **Key Project Learnings:**
+  * **Layer 4 Traffic Distribution:** Configured frontend IP configurations, backend pools, and load balancing rules to route TCP/HTTP requests across multiple VMs.
+  * **Automated Failover & Health Monitoring:** Implemented custom health probes to continuously monitor instance availability and automatically remove unhealthy nodes from rotation.
+  * **End-to-End Traffic Validation:** Verified load distribution and session behavior both via browser refreshes and CLI/terminal requests.
 
 ---
 
-## 🛠️ Step-by-Step Implementation
-
-### 1. Provisioning & Initial NSG Configuration (Port 22)
-By default, Azure NSGs deny all inbound traffic from the internet (`DenyAllInBound`). To administer the server securely:
-* Navigated to the VM's **Networking / Network Security Group** settings in the Azure Portal.
-* Created an **Inbound Security Rule** for SSH:
-  * **Source:** `Any` *(or restricted to local IP)*
-  * **Source Port Ranges:** `*`
-  * **Destination:** `Any`
-  * **Destination Port Ranges:** `22`
-  * **Protocol:** `TCP`
-  * **Action:** `Allow`
-  * **Priority:** `300`
-
-Connected from my local machine via terminal using SSH key-pair authentication:
-```bash
-ssh -i /path/to/private-key.pem azureuser@<PUBLIC_IP_ADDRESS>
-```
-
-### 2. Installing & Verifying Apache2 Web Server
-Once authenticated into the Ubuntu VM, I updated the package index and installed Apache2:
-```bash
-sudo apt update
-sudo apt install apache2 -y
-sudo systemctl status apache2
-```
-* **Observation & Troubleshooting:** Attempting to reach `http://<PUBLIC_IP_ADDRESS>` from a local browser timed out at this stage—confirming that the NSG was actively dropping unpermitted HTTP traffic despite the `apache2` service running locally on the VM.
-
-### 3. Configuring Inbound HTTP Rule (Port 80)
-To allow public web traffic without exposing unnecessary administrative ports:
-* Added a second **Inbound Security Rule** to the NSG:
-  * **Source:** `Any`
-  * **Source Port Ranges:** `*`
-  * **Destination:** `Any`
-  * **Destination Port Ranges:** `80`
-  * **Protocol:** `TCP`
-  * **Action:** `Allow`
-  * **Priority:** `310` *(assigned a higher priority / lower numerical value than the default deny rule)*
-
-### 4. End-to-End Validation
-Refreshed `http://<PUBLIC_IP_ADDRESS>` in the browser and verified that the **Apache2 Ubuntu Default Page** loaded successfully.
+### 2. [Securing & Deploying a Web Server using Network Security Groups (NSGs)](./screenshots/Securing_&_Deploying_WebServer_using_Network_Security_Groups_(NSGs)/README.md) 
+* **Core Services:** Azure Virtual Machines (Ubuntu Linux), Virtual Networks (VNets), Network Security Groups (NSGs), SSH, Apache2.
+* **What I Built:** Provisioned an Ubuntu web server in Azure, locked down inbound network access using stateful NSG rules, and deployed Apache2 over HTTP.
+* **Key Project Learnings:**
+  * **Principle of Least Privilege (PoLP):** Replaced Azure's default `DenyAllInBound` posture with granular, priority-ordered allow rules strictly for SSH (Port 22) and HTTP (Port 80).
+  * **Stateful Firewall Behavior:** Observed how NSGs evaluate inbound security rules and automatically permit return outbound traffic for established sessions.
+  * **Network Layer Troubleshooting:** Isolated service-level availability (`systemctl status apache2`) from network-level packet drops when diagnosing connection timeouts.
 
 ---
 
-## 📋 Final NSG Inbound Rules Summary
-
-| Priority | Name | Port | Protocol | Source | Destination | Action |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `300` | `Allow-SSH` | `22` | TCP | Any | Any | **Allow** |
-| `310` | `Allow-HTTP` | `80` | TCP | Any | Any | **Allow** |
-| `65500` | `DenyAllInBound` *(Default)* | `*` | Any | Any | Any | **Deny** |
-
----
-
-## 🔐 Key Security Takeaways & Production Hardening
-* **Principle of Least Privilege (PoLP):** Only exposed the exact ports required for the workload (`22` for management, `80` for web traffic), leaving all other ports closed by default.
-* **Stateful Firewall Behavior:** Observed how Azure NSGs automatically allow return outbound response traffic for established inbound sessions without needing separate outbound rules.
-* **Production Hardening (Next Steps):**
-  * Restrict Port `22` (`SSH`) strictly to a known corporate IP/VPN or replace public SSH exposure entirely with **Azure Bastion**.
-  * Enforce **HTTPS (`Port 443`)** with SSL/TLS certificates and redirect unencrypted HTTP traffic.
-  * Automate VM and NSG rule deployments using **ARM Templates** or **Terraform**.
-
----
-
-## 📸 Screenshots
-* **NSG Inbound Rules**
-  ![NSG Inbound Rules](./screenshots/VM-NGS-SSH/NSG_Inbound_Rules_table.jpg)
-
-
-* **SSH Terminal Connection**
-  ![SSH Terminal Connection](./screenshots/VM-NGS-SSH/SSH_conncetion.png)
-
-
-* **Apache Live Page**
-  ![Apache Live Page](./screenshots/VM-NGS-SSH/HTTP_Req_Success.jpg)
+## 🛠️ Core Technical Skills Demonstrated
+* **Cloud Networking:** VNets, Subnets, Public/Private IPs, Standard Load Balancers, Health Probes, NSG Rule Priorities
+* **Security & Hardening:** Stateful Firewalls, SSH Key-Pair Authentication, Least-Privilege Port Exposure
+* **Linux & Operations:** Ubuntu Server Administration, Apache2 Web Server Deployment, CLI Connectivity Testing (`ssh`, `curl`)
