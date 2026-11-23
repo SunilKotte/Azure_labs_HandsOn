@@ -92,12 +92,15 @@ Refreshed `http://<PUBLIC_IP_ADDRESS>` in the browser and verified that the **Ap
 ## 📸 Screenshots
 
 * **NSG Inbound Rules**
+
   ![NSG Inbound Rules](./NSG_Inbound_Rules_table.jpg)
 
 
 * **SSH Terminal Connection**
+
   ![SSH Terminal Connection](./SSH_conncetion.png)
 
 
 * **Apache Live Page**
+
   ![Apache Live Page](./HTTP_Req_Success.jpg)
