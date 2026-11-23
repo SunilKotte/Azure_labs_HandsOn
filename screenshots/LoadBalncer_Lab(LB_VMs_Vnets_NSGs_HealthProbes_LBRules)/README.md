@@ -59,13 +59,13 @@ Deployed a highly available, fault-tolerant web infrastructure on Microsoft Azur
 
 ## Proof of Work
 * **High-Availability Web Architecture with Azure Load Balancer**  
-  ![Architecture](/Loadbalancer.jpg)
+  ![Architecture](./Loadbalancer.jpg)
 
 * **Backend Pool & Health Status:**  
-  ![Backend Pool Health](/Testing_Load_balancer.jpg)
-  ![Backend Pool Health](/Testing_Load_balancer_Vm2.jpg)
+  ![Backend Pool Health](./Testing_Load_balancer.jpg)
+  ![Backend Pool Health](./Testing_Load_balancer_Vm2.jpg)
 * **Load Balancing in Action:**  
-  ![Traffic Distribution](/Testing_Load_balancer_via_terminal.jpg)
+  ![Traffic Distribution](./Testing_Load_balancer_via_terminal.jpg)
 
 ---
 
