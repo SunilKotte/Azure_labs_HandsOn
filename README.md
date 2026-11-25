@@ -6,7 +6,7 @@ A collection of hands-on infrastructure labs demonstrating cloud networking, Lin
 
 ## 📂 Lab Projects Overview
 
-### 1. [High-Availability Web Architecture with Azure Load Balancer](./screenshots/LoadBalncer_Lab(LB_VMs_Vnets_NSGs_HealthProbes_LBRules)/README.md)
+### 1. [High-Availability Web Architecture with Azure Load Balancer](./HandsOn_Projects/LoadBalncer_Lab(LB_VMs_Vnets_NSGs_HealthProbes_LBRules)/README.md)
 * **Core Services:** Azure Standard Load Balancer, Virtual Networks (VNets), Linux Virtual Machines, Network Security Groups (NSGs), Health Probes, Load Balancing Rules.
 * **What I Built:** Deployed a multi-VM web tier behind an Azure Standard Load Balancer to distribute incoming HTTP traffic across healthy backend instances.
 * **Key Project Learnings:**
@@ -16,7 +16,7 @@ A collection of hands-on infrastructure labs demonstrating cloud networking, Lin
 
 ---
 
-### 2. [Securing & Deploying a Web Server using Network Security Groups (NSGs)](./screenshots/Securing_&_Deploying_WebServer_using_Network_Security_Groups_(NSGs)/README.md) 
+### 2. [Securing & Deploying a Web Server using Network Security Groups (NSGs)](./HandsOn_Projects/Securing_&_Deploying_WebServer_using_Network_Security_Groups_(NSGs)/README.md) 
 * **Core Services:** Azure Virtual Machines (Ubuntu Linux), Virtual Networks (VNets), Network Security Groups (NSGs), SSH, Apache2.
 * **What I Built:** Provisioned an Ubuntu web server in Azure, locked down inbound network access using stateful NSG rules, and deployed Apache2 over HTTP.
 * **Key Project Learnings:**
