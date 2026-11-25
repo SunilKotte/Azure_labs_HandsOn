@@ -26,7 +26,19 @@ A collection of hands-on infrastructure labs demonstrating cloud networking, Lin
 
 ---
 
+### 3. [Azure Functions (Python) — Timer Trigger Deployment & Troubleshooting](./HandsOn_Projects/Azure_func_App/readme.md)
+- *Core Services:* Azure Functions (Linux Consumption Plan, Python 3.11), Azure Storage Account (`Standard_LRS`, `StorageV2`), CRON Timer Trigger (`*/5 * * * * *`), Azure CLI (`az`), Azure Functions Core Tools (`func` v4), Oryx Remote Build.
+- *What I Built:* Deployed a serverless Python v2 Timer Trigger function (`timerTriggerAppFunc01`) in `eastus2` via Azure CLI and Core Tools, along with a root-cause troubleshooting guide for Windows PowerShell deployment and runtime build issues.
+- *Key Project Learnings:*
+  - *Windows PowerShell CLI Parsing:* Used PowerShell's stop-parsing token (`--%`) when setting `--linux-fx-version "Python|3.11"` so `cmd.exe` does not misinterpret the pipe (`|`) character as a command pipeline operator.
+  - *Kudu/SCM Initialization & 503 Recovery:* Resolved `503 (Site Unavailable)` deployment errors after provisioning by verifying Storage Account network access (`defaultAction: "Allow"`), explicitly setting `FUNCTIONS_WORKER_RUNTIME=python` and `linuxFxVersion`, and restarting the app to let the background Kudu/SCM container stabilize.
+  - *Runtime Version Alignment via Oryx:* Prevented dependency incompatibilities between local Python `3.15.2` and Azure's supported `3.9–3.13` runtimes by deploying with `--build remote` so Microsoft Oryx compiles `requirements.txt` inside the target Linux Python 3.11 container.
+
+
+---
+
 ## 🛠️ Core Technical Skills Demonstrated
-* **Cloud Networking:** VNets, Subnets, Public/Private IPs, Standard Load Balancers, Health Probes, NSG Rule Priorities
-* **Security & Hardening:** Stateful Firewalls, SSH Key-Pair Authentication, Least-Privilege Port Exposure
-* **Linux & Operations:** Ubuntu Server Administration, Apache2 Web Server Deployment, CLI Connectivity Testing (`ssh`, `curl`)
+- **Networking & Traffic Management:** Azure Virtual Networks (VNets), Subnets, Network Security Groups (NSGs), Azure Load Balancer (Standard SKU), Health Probes, Load Balancing Rules, Public/Private IP Addressing.
+- **Compute & Serverless Architecture:** Azure Virtual Machines (Ubuntu Linux), Azure Functions (Python v2 Programming Model, Linux Consumption Plan), CRON Timer Triggers (`NCRONTAB`), Oryx Remote Build.
+- **Storage & Runtime Management:** Azure Storage Accounts (`Standard_LRS`, `StorageV2`), Host Storage Configuration (`AzureWebJobsStorage`), Python Runtime & Dependency Isolation.
+- **CLI Automation & Diagnostics:** Azure CLI (`az`), Azure Functions Core Tools (`func` v4), PowerShell Argument Escaping (`--%`), Kudu/SCM Deployment Diagnostics, Live Log Streaming (`logstream`), SSH, Apache Web Server.
